@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Source_Sans_3, IBM_Plex_Mono } from "next/font/google";
+import { Poppins, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
-const sourceSans3 = Source_Sans_3({
+const poppins = Poppins({
   subsets: ["latin"],
   variable: "--font-sans",
   weight: ["300", "400", "500", "600", "700"],
@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${sourceSans3.variable} ${ibmPlexMono.variable}`}>
+    <html lang="en" className={`${poppins.variable} ${ibmPlexMono.variable}`}>
       <body className="antialiased">
         {children}
       </body>
