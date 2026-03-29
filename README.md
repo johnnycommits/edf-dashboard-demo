@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# EDF Energy Dashboard Demo
 
-## Getting Started
+A Walmart natural gas usage analytics dashboard built for an EDF enterprise client presentation. Displays consumption metrics, cost analysis, and usage trends across Walmart store locations powered by EDF-sourced natural gas.
 
-First, run the development server:
+The aesthetic targets Bloomberg/Palantir-style enterprise data density — not a startup SaaS tool.
+
+## Setup
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Design System
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Visit [http://localhost:3000/design-system](http://localhost:3000/design-system) for the full design token reference (dev only — delete before production).
 
-## Learn More
+### Colors
 
-To learn more about Next.js, take a look at the following resources:
+EDF brand colors were used as fallback values (edf.fr was not accessible during scaffolding):
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Token | Hex | Usage |
+|---|---|---|
+| `edf-navy` | `#003189` | Primary brand, buttons, links |
+| `edf-navy-dark` | `#00215C` | Hover states, dark surfaces |
+| `edf-navy-light` | `#1A4DB5` | Accents, highlights |
+| `edf-orange` | `#FF6600` | Accent color, alerts, CTAs |
+| `edf-orange-light` | `#FF8833` | Orange hover states |
+| `edf-dark` | `#0D1B2A` | Dark background, near-black |
+| `edf-light-gray` | `#F4F6F9` | Page background surface |
+| `edf-mid-gray` | `#8492A6` | Muted text, placeholders |
+| `edf-dark-gray` | `#3D4F6E` | Secondary text |
+| `edf-white` | `#FFFFFF` | Card surfaces |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Typography
 
-## Deploy on Vercel
+- **Body font:** [Source Sans 3](https://fonts.google.com/specimen/Source+Sans+3) — EDF's actual brand font (Marianne) is not available as a web font. Source Sans 3 is the closest professional substitute with similar humanist proportions and excellent legibility at data-dense sizes.
+- **Monospace font:** [IBM Plex Mono](https://fonts.google.com/specimen/IBM+Plex+Mono) — used for all numeric data values, KPIs, and metric displays. Conveys precision and technical credibility.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+app/
+  layout.tsx          — Root layout with font setup
+  page.tsx            — Landing/index page
+  globals.css         — EDF design tokens + Tailwind base
+  design-system/
+    page.tsx          — Dev-only design token reference
+components/
+  ui/                 — shadcn/ui components (Radix primitives)
+lib/
+  utils.ts            — cn() utility
+tailwind.config.ts    — EDF color extensions + font families
+```
+
+## Tech Stack
+
+- **Next.js 14** — App Router
+- **TypeScript** — strict mode
+- **Tailwind CSS v3** — utility-first styling
+- **shadcn/ui** — accessible component primitives (Radix UI)
+- **Recharts** — data visualization
+- **date-fns** — date formatting utilities
