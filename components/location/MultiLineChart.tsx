@@ -25,10 +25,10 @@ export function MultiLineChart({ data, height = 220 }: MultiLineChartProps) {
         <ResponsiveContainer width="100%" height={height}>
           <LineChart data={data} margin={{ top: 4, right: 16, bottom: 0, left: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" vertical={false} />
-            <XAxis dataKey="month" tickFormatter={fmtMonth} tick={{ fontSize: 11, fontFamily: "IBM Plex Mono", fill: "#8492A6" }} tickLine={false} axisLine={false} />
+            <XAxis dataKey="month" tickFormatter={fmtMonth} tick={{ fontSize: 11, fontFamily: "var(--font-mono)", fill: "#8492A6" }} tickLine={false} axisLine={false} />
             <YAxis hide />
-            <Tooltip contentStyle={{ fontFamily: "IBM Plex Mono", fontSize: 12, border: "1px solid #E5E7EB", borderRadius: 6 }} />
-            <Legend wrapperStyle={{ fontFamily: "IBM Plex Mono", fontSize: 12 }} />
+            <Tooltip contentStyle={{ fontFamily: "var(--font-mono)", fontSize: 12, border: "1px solid #E5E7EB", borderRadius: 6 }} />
+            <Legend wrapperStyle={{ fontFamily: "var(--font-mono)", fontSize: 12 }} />
             <Line type="monotone" dataKey="thisYear" name="2025" stroke="#003189" strokeWidth={2} dot={false} />
             <Line type="monotone" dataKey="lastYear" name="2024" stroke="#FF6600" strokeWidth={2} dot={false} />
           </LineChart>

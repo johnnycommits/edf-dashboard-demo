@@ -27,7 +27,12 @@ export function LocationKpiRow({ summary, isLoading }: LocationKpiRowProps) {
     : 0;
 
   const peak = summary.peakDay;
-  const peakLabel = `${peak.thermsUsed.toLocaleString()} therms on ${format(parseISO(peak.date), "MMM d, yyyy")}`;
+  const peakLabel = `${peak.thermsUsed.toLocaleString()} therms`;
+  const peakSubvalue = (
+    <>
+      on <span className="text-edf-text-secondary">{format(parseISO(peak.date), "MMM d, yyyy")}</span>
+    </>
+  );
 
   return (
     <section className="mt-4">
@@ -52,6 +57,7 @@ export function LocationKpiRow({ summary, isLoading }: LocationKpiRowProps) {
           change={0}
           changeLabel=""
           isLoading={isLoading}
+          subvalue={peakSubvalue}
         />
         <KpiCard
           title="YTD Total"

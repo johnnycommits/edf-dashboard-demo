@@ -8,9 +8,10 @@ interface KpiCardProps {
   change: number;
   changeLabel: string;
   isLoading?: boolean;
+  subvalue?: React.ReactNode;
 }
 
-export function KpiCard({ title, value, change, changeLabel, isLoading }: KpiCardProps) {
+export function KpiCard({ title, value, change, changeLabel, isLoading, subvalue }: KpiCardProps) {
   if (isLoading) {
     return (
       <div className="animate-pulse bg-white rounded-xl border-l-[3px] border-l-edf-navy ring-1 ring-black/10 p-5">
@@ -35,6 +36,7 @@ export function KpiCard({ title, value, change, changeLabel, isLoading }: KpiCar
       <CardContent className="p-5">
         <p className="text-xs uppercase tracking-wide text-edf-mid-gray font-sans mb-2">{title}</p>
         <p className="text-2xl font-mono font-semibold text-edf-dark leading-tight">{value}</p>
+        {subvalue && <p className="text-sm font-mono text-edf-mid-gray mt-0.5">{subvalue}</p>}
         <div className="flex items-center gap-2 mt-1.5">
           {changeEl}
           <span className="text-xs text-edf-mid-gray">{changeLabel}</span>

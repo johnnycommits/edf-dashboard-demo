@@ -36,16 +36,16 @@ export function TemperatureOverlayChart({ data, height = 260 }: TemperatureOverl
             <XAxis
               dataKey="date"
               tickFormatter={(d) => format(parseISO(d), "MMM d")}
-              tick={{ fontSize: 11, fontFamily: "IBM Plex Mono", fill: "#8492A6" }}
+              tick={{ fontSize: 11, fontFamily: "var(--font-mono)", fill: "#8492A6" }}
               tickLine={false}
               axisLine={false}
               interval={3}
             />
-            <YAxis yAxisId="therms" orientation="left" stroke="#003189" width={48} tick={{ fontSize: 11, fontFamily: "IBM Plex Mono", fill: "#3D4F6E" }} />
-            <YAxis yAxisId="temp" orientation="right" stroke="#FF6600" width={48} tick={{ fontSize: 11, fontFamily: "IBM Plex Mono", fill: "#3D4F6E" }} />
+            <YAxis yAxisId="therms" orientation="left" stroke="#003189" width={48} tick={{ fontSize: 11, fontFamily: "var(--font-mono)", fill: "#3D4F6E" }} />
+            <YAxis yAxisId="temp" orientation="right" stroke="#FF6600" width={48} tick={{ fontSize: 11, fontFamily: "var(--font-mono)", fill: "#3D4F6E" }} />
             <Tooltip
               contentStyle={{
-                fontFamily: "IBM Plex Mono",
+                fontFamily: "var(--font-mono)",
                 fontSize: 12,
                 border: "1px solid #E5E7EB",
                 borderRadius: 6,
@@ -58,7 +58,7 @@ export function TemperatureOverlayChart({ data, height = 260 }: TemperatureOverl
               }}
             />
             <Legend
-              wrapperStyle={{ fontFamily: "IBM Plex Mono", fontSize: 12 }}
+              wrapperStyle={{ fontFamily: "var(--font-mono)", fontSize: 12 }}
               formatter={(val) => (val === "therms" ? "Usage (therms)" : val === "tempF" ? "Temp (°F)" : (val as string))}
             />
             <Line

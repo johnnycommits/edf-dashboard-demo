@@ -29,14 +29,14 @@ export function UsageAreaChart({ data, height = 220 }: UsageAreaChartProps) {
             <XAxis
               dataKey="date"
               tickFormatter={(d) => format(parseISO(d), "MMM d")}
-              tick={{ fontSize: 11, fontFamily: "IBM Plex Mono", fill: "#8492A6" }}
+              tick={{ fontSize: 11, fontFamily: "var(--font-mono)", fill: "#8492A6" }}
               tickLine={false}
               axisLine={false}
               interval={Math.ceil(data.length / 12)}
             />
             <YAxis hide />
             <Tooltip
-              contentStyle={{ fontFamily: "IBM Plex Mono", fontSize: 12, border: "1px solid #E5E7EB", borderRadius: 6 }}
+              contentStyle={{ fontFamily: "var(--font-mono)", fontSize: 12, border: "1px solid #E5E7EB", borderRadius: 6 }}
               formatter={(v) => [`${Number(v).toLocaleString()} therms`, "Usage"]}
               labelFormatter={(d) => format(parseISO(d as string), "MMM d, yyyy")}
             />

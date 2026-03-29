@@ -53,7 +53,7 @@ export function PortfolioChart({ data, isLoading }: PortfolioChartProps) {
             <XAxis
               dataKey="date"
               tickFormatter={(d) => format(parseISO(d), "MMM d")}
-              tick={{ fontSize: 11, fontFamily: "IBM Plex Mono", fill: "#8492A6" }}
+              tick={{ fontSize: 11, fontFamily: "var(--font-mono)", fill: "#8492A6" }}
               tickLine={false}
               axisLine={false}
               interval={4}
@@ -61,7 +61,7 @@ export function PortfolioChart({ data, isLoading }: PortfolioChartProps) {
             <YAxis hide />
             <Tooltip
               contentStyle={{
-                fontFamily: "IBM Plex Mono",
+                fontFamily: "var(--font-mono)",
                 fontSize: 12,
                 border: "1px solid #E5E7EB",
                 borderRadius: 6,
