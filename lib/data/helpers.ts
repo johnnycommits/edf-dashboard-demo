@@ -1,4 +1,4 @@
-import { parseISO, isWithinInterval, format } from "date-fns";
+import { parseISO, isWithinInterval } from "date-fns";
 import type { WalmartLocation, DailyUsageRecord, LocationSummary } from "./types";
 import { walmartLocations } from "./walmart-locations";
 import { allUsageRecords } from "./gas-usage";
