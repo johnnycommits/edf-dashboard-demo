@@ -38,8 +38,8 @@ export function getUsageByMonth(
 export function getLocationSummary(locationId: string): LocationSummary {
   const location = getLocationById(locationId);
 
-  // YTD = Jan 1 2025 through Jun 30 2025 (last date in dataset)
-  const ytdRecords = getUsageByDateRange(locationId, "2025-01-01", "2025-06-30");
+  // 2026 YTD through Mar 30
+  const ytdRecords = getUsageByDateRange(locationId, "2026-01-01", "2026-03-30");
   const allLocationRecords = allUsageRecords.filter((r) => r.locationId === locationId);
 
   const totalThermsYTD = ytdRecords.reduce((sum, r) => sum + r.thermsUsed, 0);
@@ -55,9 +55,9 @@ export function getLocationSummary(locationId: string): LocationSummary {
     r.thermsUsed < min.thermsUsed ? r : min
   );
 
-  // Current month = Jun 2025, previous = May 2025
-  const currentMonthRecords = getUsageByMonth(locationId, 2025, 6);
-  const previousMonthRecords = getUsageByMonth(locationId, 2025, 5);
+  // Current month = Mar 2026, previous = Feb 2026
+  const currentMonthRecords = getUsageByMonth(locationId, 2026, 3);
+  const previousMonthRecords = getUsageByMonth(locationId, 2026, 2);
 
   const currentMonthUsage = currentMonthRecords.reduce((sum, r) => sum + r.thermsUsed, 0);
   const previousMonthUsage = previousMonthRecords.reduce((sum, r) => sum + r.thermsUsed, 0);

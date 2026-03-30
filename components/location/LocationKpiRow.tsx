@@ -13,9 +13,9 @@ interface LocationKpiRowProps {
 export function LocationKpiRow({ summary, isLoading }: LocationKpiRowProps) {
   const locationId = summary.location.id;
 
-  // Current and previous month costs (dataset ends 2025-06)
-  const currentMonth = "2025-06";
-  const prevMonth = "2025-05";
+  // Current and previous month costs (dataset ends 2026-03-30)
+  const currentMonth = "2026-03";
+  const prevMonth = "2026-02";
   const currentMonthCost = allUsageRecords
     .filter((r) => r.locationId === locationId && r.date.startsWith(currentMonth))
     .reduce((s, r) => s + r.costUSD, 0);

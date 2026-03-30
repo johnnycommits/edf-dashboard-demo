@@ -13,7 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { format, parseISO } from "date-fns";
 
 interface PortfolioChartProps {
-  data: Array<{ date: string; therms: number }>;
+  data: Array<{ date: string; therms: number | null }>;
   isLoading?: boolean;
 }
 
@@ -32,11 +32,26 @@ export function PortfolioChart({ data, isLoading }: PortfolioChartProps) {
     );
   }
 
+  // Keep the same tick density but left-align only the first label
+  const renderDateTick = ({ x, y, payload, index }: any) => (
+    <text
+      x={x}
+      y={y}
+      dy={12}
+      textAnchor={index === 0 ? "start" : "middle"}
+      fontSize={11}
+      fontFamily="var(--font-mono)"
+      fill="#8492A6"
+    >
+      {format(parseISO(payload.value), "MMM d")}
+    </text>
+  );
+
   return (
     <Card className="bg-white">
       <CardHeader className="pb-0">
         <CardTitle className="text-sm font-sans font-semibold text-edf-dark">
-          30-Day Portfolio Usage
+          This Month's Portfolio Usage
         </CardTitle>
         <p className="text-xs text-edf-mid-gray">All 12 locations combined, therms/day</p>
       </CardHeader>
@@ -52,8 +67,7 @@ export function PortfolioChart({ data, isLoading }: PortfolioChartProps) {
             <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" vertical={false} />
             <XAxis
               dataKey="date"
-              tickFormatter={(d) => format(parseISO(d), "MMM d")}
-              tick={{ fontSize: 11, fontFamily: "var(--font-mono)", fill: "#8492A6" }}
+              tick={renderDateTick}
               tickLine={false}
               axisLine={false}
               interval={4}
@@ -66,7 +80,7 @@ export function PortfolioChart({ data, isLoading }: PortfolioChartProps) {
                 border: "1px solid #E5E7EB",
                 borderRadius: 6,
               }}
-              formatter={(v) => [`${Number(v).toLocaleString()} therms`, "Portfolio"]}
+              formatter={(v) => [v == null ? "—" : `${Number(v).toLocaleString()} therms`, "Portfolio"]}
               labelFormatter={(d) => format(parseISO(d as string), "MMM d, yyyy")}
             />
             <Area

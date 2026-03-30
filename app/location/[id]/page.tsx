@@ -37,8 +37,8 @@ export default function LocationPage({ params }: { params: { id: string } }) {
   const [recent14, setRecent14] = useState<DailyUsageRecord[]>([]);
   const [yearCompare, setYearCompare] = useState<Array<{ month: string; thisYear: number; lastYear: number }>>([]);
 
-  // For consistent dataset end date, use last date in dataset (2025-06-30)
-  const datasetEnd = "2025-06-30";
+  // For consistent dataset end date, use last date in dataset (2026-03-30)
+  const datasetEnd = "2026-03-30";
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -59,9 +59,9 @@ export default function LocationPage({ params }: { params: { id: string } }) {
           .map((r) => ({ date: r.date, therms: r.thermsUsed }));
         setLast90Days(rec90);
 
-        // Last 12 months monthly totals from 2024-07 to 2025-06
+        // Last 12 months monthly totals Apr 2025 – Mar 2026
         const months: string[] = [];
-        const startMonth = new Date(2024, 6, 1); // Jul 2024
+        const startMonth = new Date(2025, 3, 1); // Apr 2025
         for (let i = 0; i < 12; i++) {
           const d = new Date(startMonth.getFullYear(), startMonth.getMonth() + i, 1);
           const y = d.getFullYear();
@@ -85,17 +85,21 @@ export default function LocationPage({ params }: { params: { id: string } }) {
           .sort((a, b) => b.date.localeCompare(a.date));
         setRecent14(rec14.slice(0, 14));
 
-        // Year comparison Jan–Jun 2024 vs Jan–Jun 2025
-        const monthsJJ = [1, 2, 3, 4, 5, 6];
-        const yc = monthsJJ.map((m) => {
-          const mm = String(m).padStart(2, "0");
-          const lastYear = allUsageRecords
-            .filter((r) => r.locationId === params.id && r.date.startsWith(`2024-${mm}`))
-            .reduce((s, r) => s + r.thermsUsed, 0);
+        // Compare last 6 months (Oct 2025–Mar 2026) vs prior 6 months (Apr–Sep 2025)
+        const monthsThis = [10, 11, 12, 1, 2, 3];
+        const monthsPrev = [4, 5, 6, 7, 8, 9];
+        const yc = monthsThis.map((m, idx) => {
+          const yearThis = m >= 10 ? 2025 : 2026;
+          const mmThis = String(m).padStart(2, "0");
           const thisYear = allUsageRecords
-            .filter((r) => r.locationId === params.id && r.date.startsWith(`2025-${mm}`))
+            .filter((r) => r.locationId === params.id && r.date.startsWith(`${yearThis}-${mmThis}`))
             .reduce((s, r) => s + r.thermsUsed, 0);
-          return { month: `2025-${mm}`, thisYear, lastYear };
+          const mp = monthsPrev[idx];
+          const mmPrev = String(mp).padStart(2, "0");
+          const lastYear = allUsageRecords
+            .filter((r) => r.locationId === params.id && r.date.startsWith(`2025-${mmPrev}`))
+            .reduce((s, r) => s + r.thermsUsed, 0);
+          return { month: `${yearThis}-${mmThis}`, thisYear, lastYear };
         });
         setYearCompare(yc);
 

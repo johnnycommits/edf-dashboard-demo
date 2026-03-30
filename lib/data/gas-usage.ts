@@ -62,10 +62,11 @@ function generateRecordsForLocation(location: WalmartLocation): DailyUsageRecord
     location.lat * location.lng + location.storeSizeSqFt
   );
 
-  const startYear = 2024;
-  const startMonth = 1;
-  const endYear = 2025;
-  const endMonth = 6;
+  // Generate data from Apr 2025 through Mar 2026 (inclusive)
+  const startYear = 2025;
+  const startMonth = 4; // Apr
+  const endYear = 2026;
+  const endMonth = 3; // Mar
 
   let seedCounter = location.storeSizeSqFt + location.lat * 1000;
 
@@ -78,7 +79,11 @@ function generateRecordsForLocation(location: WalmartLocation): DailyUsageRecord
       const multiplier = seasonalMultiplierByClimate[location.climateZone][monthIdx];
       const avgTemp = avgTempByClimateAndMonth[location.climateZone][monthIdx];
       const tempVariation = tempVariationByClimate[location.climateZone];
-      const daysInMonth = getDaysInMonth(year, month);
+      let daysInMonth = getDaysInMonth(year, month);
+      // Cap the final month (Mar 2026) at 30 to simulate "today is Mar 30"
+      if (year === 2026 && month === 3) {
+        daysInMonth = Math.min(daysInMonth, 30);
+      }
 
       for (let day = 1; day <= daysInMonth; day++) {
         seedCounter += 1;

@@ -31,10 +31,14 @@ export function AppNav() {
       <nav className="h-14 bg-edf-navy flex items-center px-6 justify-between sticky top-0 z-20 shadow-md">
         {/* Left: Brand */}
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1">
+          <Link
+            href="/"
+            aria-label="Go to dashboard"
+            className="flex items-center gap-1 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+          >
             <span className="font-mono font-bold text-xl text-white tracking-tight">ABC</span>
             <span className="font-mono font-bold text-xl text-edf-orange tracking-tight">ENERGY</span>
-          </div>
+          </Link>
           <span className="text-white/30 select-none hidden sm:inline">|</span>
           <span className="text-white/60 font-sans text-sm hidden sm:inline">Walmart, Inc.</span>
         </div>

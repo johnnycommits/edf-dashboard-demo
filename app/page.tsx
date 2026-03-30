@@ -14,7 +14,7 @@ import {
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [summaries, setSummaries] = useState<LocationSummary[]>([]);
-  const [portfolioData, setPortfolioData] = useState<Array<{ date: string; therms: number }>>([]);
+  const [portfolioData, setPortfolioData] = useState<Array<{ date: string; therms: number | null }>>([]);
   const [sparklineMap, setSparklineMap] = useState<Record<string, number[]>>({});
 
   useEffect(() => {
@@ -22,23 +22,24 @@ export default function Home() {
       const s = getAllLocationsSummary();
       setSummaries(s);
 
-      // 30-day portfolio: sum all locations by date for Jun 2025
+      // This month's portfolio usage: sum all locations by date for Mar 2026
       const byDate: Record<string, number> = {};
       allUsageRecords
-        .filter((r) => r.date.startsWith("2025-06"))
+        .filter((r) => r.date.startsWith("2026-03"))
         .forEach((r) => {
           byDate[r.date] = (byDate[r.date] ?? 0) + r.thermsUsed;
         });
-      setPortfolioData(
-        Object.entries(byDate)
-          .sort(([a], [b]) => a.localeCompare(b))
-          .map(([date, therms]) => ({ date, therms: Math.round(therms) }))
-      );
+      const mapped = Object.entries(byDate)
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([date, therms]) => ({ date, therms: Math.round(therms) }));
+      // Add a placeholder for Mar 31 with null so the line doesn't extend into tomorrow
+      mapped.push({ date: "2026-03-31", therms: null });
+      setPortfolioData(mapped);
 
-      // 7-day sparklines per location (Jun 24–30, 2025)
+      // 7-day sparklines per location (Mar 24–30, 2026)
       const sMap: Record<string, number[]> = {};
       allUsageRecords
-        .filter((r) => r.date >= "2025-06-24" && r.date <= "2025-06-30")
+        .filter((r) => r.date >= "2026-03-24" && r.date <= "2026-03-30")
         .sort((a, b) => a.date.localeCompare(b.date))
         .forEach((r) => {
           if (!sMap[r.locationId]) sMap[r.locationId] = [];
@@ -60,10 +61,10 @@ export default function Home() {
       : 0;
 
   const currentMonthCost = allUsageRecords
-    .filter((r) => r.date.startsWith("2025-06"))
+    .filter((r) => r.date.startsWith("2026-03"))
     .reduce((s, r) => s + r.costUSD, 0);
   const prevMonthCost = allUsageRecords
-    .filter((r) => r.date.startsWith("2025-05"))
+    .filter((r) => r.date.startsWith("2026-02"))
     .reduce((s, r) => s + r.costUSD, 0);
   const costChange =
     prevMonthCost > 0
@@ -97,7 +98,7 @@ export default function Home() {
                   changeLabel="vs last month"
                 />
                 <KpiCard
-                  title="Total Cost (Jun)"
+                  title="Total Cost (Mar)"
                   value={`$${Math.round(currentMonthCost).toLocaleString()}`}
                   change={costChange}
                   changeLabel="vs last month"
@@ -109,7 +110,7 @@ export default function Home() {
                   changeLabel="vs last month"
                 />
                 <KpiCard
-                  title="Highest Consuming"
+                  title="Highest Usage This Month"
                   value={
                     highest
                       ? highest.location.city + ", " + highest.location.stateCode
