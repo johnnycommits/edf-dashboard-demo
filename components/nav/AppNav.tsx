@@ -85,6 +85,9 @@ export function AppNav() {
             })}
           </ul>
 
+          {/* Separator matching the one after logo */}
+          <span className="text-white/30 select-none hidden sm:inline">|</span>
+
           {/* Notifications + User */}
           <NotificationsBell />
           <UserProfileMenu />
