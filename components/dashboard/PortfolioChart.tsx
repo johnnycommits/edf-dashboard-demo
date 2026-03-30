@@ -11,6 +11,7 @@ import {
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { format, parseISO } from "date-fns";
+import { useEffect, useState } from "react";
 
 interface PortfolioChartProps {
   data: Array<{ date: string; therms: number | null }>;
@@ -18,6 +19,13 @@ interface PortfolioChartProps {
 }
 
 export function PortfolioChart({ data, isLoading }: PortfolioChartProps) {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 640);
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
   if (isLoading) {
     return (
       <Card className="bg-white">
@@ -32,20 +40,52 @@ export function PortfolioChart({ data, isLoading }: PortfolioChartProps) {
     );
   }
 
-  // Keep the same tick density but left-align only the first label
-  const renderDateTick = ({ x, y, payload, index }: any) => (
-    <text
-      x={x}
-      y={y}
-      dy={12}
-      textAnchor={index === 0 ? "start" : "middle"}
-      fontSize={11}
-      fontFamily="var(--font-mono)"
-      fill="#8492A6"
-    >
-      {format(parseISO(payload.value), "MMM d")}
-    </text>
-  );
+  // Daily within a month: start at 2nd day, end at day before last, then every 4 days
+  const n = data.length;
+  const step = isMobile ? 8 : 4;
+  let tickValues: string[] = [];
+  if (n > 3) {
+    const firstDate = parseISO(data[0].date);
+    const lastDate = parseISO(data[n - 1].date);
+    const month = firstDate.getMonth();
+    const year = firstDate.getFullYear();
+    // Desired endpoints
+    const desiredStart = new Date(year, month, isMobile ? 3 : 2); // offset more on mobile
+    const desiredEnd = new Date(lastDate.getFullYear(), lastDate.getMonth(), new Date(lastDate.getFullYear(), lastDate.getMonth() + 1, 0).getDate() - 1); // day before last
+
+    // Find indices in data closest to desiredStart (>=) and desiredEnd (<=)
+    const startIdx = Math.max(
+      1,
+      data.findIndex((d) => parseISO(d.date) >= desiredStart)
+    );
+    let endIdx = data.length - 2;
+    for (let i = n - 1; i >= 0; i--) {
+      if (parseISO(data[i].date) <= desiredEnd) {
+        endIdx = Math.min(i, n - 2);
+        break;
+      }
+    }
+    // Build ticks across the window
+    if (startIdx < endIdx) {
+      if (isMobile) {
+        // Exactly 4 ticks: start, two mids, end
+        const total = 4;
+        const span = endIdx - startIdx;
+        if (span <= 0) {
+          tickValues = [data[startIdx].date];
+        } else {
+          const stepIdx = span / (total - 1);
+          tickValues = Array.from({ length: total }, (_, k) => {
+            const idx = Math.round(startIdx + k * stepIdx);
+            return data[Math.min(endIdx, Math.max(startIdx, idx))].date;
+          });
+        }
+      } else {
+        for (let i = startIdx; i <= endIdx; i += step) tickValues.push(data[i].date);
+        if (tickValues[tickValues.length - 1] !== data[endIdx].date) tickValues.push(data[endIdx].date);
+      }
+    }
+  }
 
   return (
     <Card className="bg-white">
@@ -67,10 +107,12 @@ export function PortfolioChart({ data, isLoading }: PortfolioChartProps) {
             <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" vertical={false} />
             <XAxis
               dataKey="date"
-              tick={renderDateTick}
+              ticks={tickValues}
+              tickFormatter={(d) => format(parseISO(d), "MMM d")}
+              tick={{ fontSize: 11, fontFamily: "var(--font-mono)", fill: "#8492A6" }}
               tickLine={false}
               axisLine={false}
-              interval={4}
+              interval={0}
             />
             <YAxis hide />
             <Tooltip

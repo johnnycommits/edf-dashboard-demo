@@ -12,6 +12,7 @@ import {
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { format, parseISO } from "date-fns";
+import { useEffect, useState } from "react";
 
 interface TemperatureOverlayChartProps {
   data: Array<{ date: string; therms: number; tempF: number }>;
@@ -19,6 +20,44 @@ interface TemperatureOverlayChartProps {
 }
 
 export function TemperatureOverlayChart({ data, height = 260 }: TemperatureOverlayChartProps) {
+  // Adjust tick density for mobile
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 640);
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+  // Daily ticks: start at 2nd day, end at day before last
+  // Desktop: every 4 days; Mobile: exactly 3 ticks (start/mid/end)
+  const n = data.length;
+  const step = 4;
+  let tickValues: string[] = [];
+  if (n > 3) {
+    const first = parseISO(data[0].date);
+    const last = parseISO(data[n - 1].date);
+    const desiredStart = new Date(first.getFullYear(), first.getMonth(), 2);
+    const desiredEnd = new Date(last.getFullYear(), last.getMonth(), new Date(last.getFullYear(), last.getMonth() + 1, 0).getDate() - 1);
+
+    const startIdx = Math.max(1, data.findIndex((d) => parseISO(d.date) >= desiredStart));
+    let endIdx = n - 2;
+    for (let i = n - 1; i >= 0; i--) {
+      if (parseISO(data[i].date) <= desiredEnd) {
+        endIdx = Math.min(i, n - 2);
+        break;
+      }
+    }
+    if (startIdx < endIdx) {
+      if (isMobile) {
+        const midIdx = Math.round((startIdx + endIdx) / 2);
+        tickValues = [data[startIdx].date, data[midIdx].date, data[endIdx].date];
+      } else {
+        for (let i = startIdx; i <= endIdx; i += step) tickValues.push(data[i].date);
+        if (tickValues[tickValues.length - 1] !== data[endIdx].date) tickValues.push(data[endIdx].date);
+      }
+    }
+  }
+
   return (
     <Card className="bg-white">
       <CardHeader className="pb-0">
@@ -35,11 +74,12 @@ export function TemperatureOverlayChart({ data, height = 260 }: TemperatureOverl
             <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" vertical={false} />
             <XAxis
               dataKey="date"
+              ticks={tickValues}
               tickFormatter={(d) => format(parseISO(d), "MMM d")}
               tick={{ fontSize: 11, fontFamily: "var(--font-mono)", fill: "#8492A6" }}
               tickLine={false}
               axisLine={false}
-              interval={3}
+              interval={0}
             />
             <YAxis yAxisId="therms" orientation="left" stroke="#003189" width={48} tick={{ fontSize: 11, fontFamily: "var(--font-mono)", fill: "#3D4F6E" }} />
             <YAxis yAxisId="temp" orientation="right" stroke="#FF6600" width={48} tick={{ fontSize: 11, fontFamily: "var(--font-mono)", fill: "#3D4F6E" }} />
@@ -86,4 +126,3 @@ export function TemperatureOverlayChart({ data, height = 260 }: TemperatureOverl
     </Card>
   );
 }
-

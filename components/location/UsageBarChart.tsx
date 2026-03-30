@@ -14,6 +14,8 @@ export function UsageBarChart({ data, height = 220 }: UsageBarChartProps) {
     const date = new Date(Number(y), Number(mm) - 1, 1);
     return date.toLocaleString(undefined, { month: "short" });
   };
+  // Show all month labels (including first/last) — one per bar
+  const tickValues = data.map((d) => d.month);
 
   return (
     <Card className="bg-white">
@@ -25,7 +27,15 @@ export function UsageBarChart({ data, height = 220 }: UsageBarChartProps) {
         <ResponsiveContainer width="100%" height={height}>
           <BarChart data={data} margin={{ top: 4, right: 16, bottom: 0, left: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" vertical={false} />
-            <XAxis dataKey="month" tickFormatter={fmtMonth} tick={{ fontSize: 11, fontFamily: "var(--font-mono)", fill: "#8492A6" }} tickLine={false} axisLine={false} />
+            <XAxis
+              dataKey="month"
+              ticks={tickValues}
+              tickFormatter={fmtMonth}
+              tick={{ fontSize: 11, fontFamily: "var(--font-mono)", fill: "#8492A6" }}
+              tickLine={false}
+              axisLine={false}
+              interval={0}
+            />
             <YAxis hide />
             <Tooltip
               contentStyle={{ fontFamily: "var(--font-mono)", fontSize: 12, border: "1px solid #E5E7EB", borderRadius: 6 }}

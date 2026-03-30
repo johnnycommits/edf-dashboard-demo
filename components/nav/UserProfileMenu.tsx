@@ -3,30 +3,17 @@ import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Settings as SettingsIcon, HelpCircle, ArrowRight } from "lucide-react";
 // no caret icon per request
 
-const MENU_SECTIONS = [
-  {
-    heading: "Account",
-    items: ["Settings & Privacy", "Help", "Language"],
-  },
-  {
-    heading: "Manage",
-    items: ["Account Settings"],
-  },
-  {
-    heading: undefined,
-    items: ["Sign out"],
-  },
-] as const;
+// Menu items updated to align with the mock screenshot
+const MENU_ITEMS = ["Settings", "Help & support", "Sign out"] as const;
 
 // Map menu labels to routes and enabled state.
 // Only enable items with real destinations to avoid 404s.
 const PROFILE_ITEM_META: Record<string, { href?: string; enabled: boolean }> = {
-  "Settings & Privacy": { href: "/settings", enabled: false },
-  Help: { href: "/help", enabled: false },
-  Language: { href: "/language", enabled: false },
-  "Account Settings": { href: "/settings/account", enabled: false },
+  Settings: { href: "/settings", enabled: false },
+  "Help & support": { href: "/help", enabled: false },
   "Sign out": { enabled: true },
 };
 
@@ -95,84 +82,73 @@ export function UserProfileMenu() {
             />
             <div className="min-w-0">
               <p className="text-sm font-semibold text-edf-dark font-sans leading-tight">John Ludena</p>
-              <p className="text-xs text-edf-mid-gray font-sans mt-0.5 leading-snug">Sr. Design Engineer · ABC Energy</p>
+              <p className="text-xs text-edf-mid-gray font-sans mt-0.5 leading-snug">Energy Manager · Walmart</p>
             </div>
           </div>
 
-          <div className="px-4 py-3 border-b border-gray-100">
-            <Link
-              href="/profile"
-              className="w-full inline-block text-center text-sm font-semibold text-edf-navy border border-edf-navy rounded-full py-1.5 hover:bg-edf-navy/5 transition-colors font-sans"
-            >
-              View profile
-            </Link>
-          </div>
+          {/* Menu items */}
+          <div className="py-2">
+            {MENU_ITEMS.map((item, idx) => {
+              const meta = PROFILE_ITEM_META[item] ?? { enabled: false };
+              const isActive = meta.href && pathname === meta.href;
 
-          <div className="max-h-[min(70vh,28rem)] overflow-auto">
-            {MENU_SECTIONS.map((section, si) => (
-              <div key={si} className="border-b border-gray-100 last:border-0 py-2">
-                {section.heading && (
-                  <p className="px-4 py-1 text-xs font-semibold text-edf-dark font-sans">{section.heading}</p>
-                )}
-                {section.items.map((item) => {
-                  const meta = PROFILE_ITEM_META[item] ?? { enabled: false };
-                  const isActive = meta.href && pathname === meta.href;
-                  const dot = (
-                    <span
-                      aria-hidden
-                      className={`mr-2 inline-block w-1.5 h-1.5 rounded-full ${
-                        isActive ? "bg-edf-orange" : "bg-white/0"
-                      }`}
-                    />
-                  );
+              const icon =
+                item === "Settings" ? (
+                  <SettingsIcon className="w-4 h-4 text-edf-mid-gray" />
+                ) : item === "Help & support" ? (
+                  <HelpCircle className="w-4 h-4 text-edf-mid-gray" />
+                ) : (
+                  <ArrowRight className="w-4 h-4 text-edf-mid-gray" />
+                );
 
-                  if (!meta.enabled) {
-                    return (
-                      <div
-                        key={item}
-                        role="menuitem"
-                        aria-disabled="true"
-                        className="w-full flex items-center px-4 py-2 text-sm text-edf-mid-gray cursor-not-allowed font-sans"
-                      >
-                        {dot}
-                        {item}
-                      </div>
-                    );
-                  }
+              const baseClasses =
+                "w-full flex items-center gap-3 px-4 py-2 text-sm font-sans" +
+                " hover:bg-edf-light-gray transition-colors";
 
-                  if (item === "Sign out") {
-                    return (
-                      <button
-                        key={item}
-                        role="menuitem"
-                        className="w-full flex items-center text-left px-4 py-2 text-sm text-edf-dark-gray hover:bg-edf-light-gray font-sans transition-colors"
-                        onClick={() => {
-                          // Placeholder sign out action
-                          setOpen(false);
-                          console.log("Sign out clicked");
-                        }}
-                      >
-                        {dot}
-                        {item}
-                      </button>
-                    );
-                  }
+              if (!meta.enabled) {
+                return (
+                  <div
+                    key={item}
+                    role="menuitem"
+                    aria-disabled="true"
+                    className={`${baseClasses} text-edf-mid-gray cursor-not-allowed`}
+                  >
+                    {icon}
+                    <span>{item}</span>
+                  </div>
+                );
+              }
 
-                  return (
-                    <Link
-                      key={item}
-                      role="menuitem"
-                      href={meta.href!}
-                      className="w-full flex items-center px-4 py-2 text-sm text-edf-dark-gray hover:bg-edf-light-gray font-sans transition-colors"
-                      onClick={() => setOpen(false)}
-                    >
-                      {dot}
-                      {item}
-                    </Link>
-                  );
-                })}
-              </div>
-            ))}
+              if (item === "Sign out") {
+                return (
+                  <button
+                    key={item}
+                    role="menuitem"
+                    className={`${baseClasses} text-edf-dark`}
+                    onClick={() => {
+                      setOpen(false);
+                      console.log("Sign out clicked");
+                    }}
+                  >
+                    {icon}
+                    <span>{item}</span>
+                  </button>
+                );
+              }
+
+              return (
+                <Link
+                  key={item}
+                  role="menuitem"
+                  href={meta.href!}
+                  className={`${baseClasses} ${isActive ? "bg-edf-light-gray" : "text-edf-dark"}`}
+                  onClick={() => setOpen(false)}
+                >
+                  {icon}
+                  <span>{item}</span>
+                </Link>
+              );
+            })}
           </div>
         </div>
       )}
