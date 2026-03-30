@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { format } from "date-fns";
+import { AppNav } from "@/components/nav";
 import { getAllLocationsSummary, allUsageRecords } from "@/lib/data";
 import type { LocationSummary } from "@/lib/data";
 import {
@@ -77,26 +77,10 @@ export default function Home() {
     null
   );
 
-  const today = format(new Date(), "MMM d, yyyy");
-
   return (
     <main className="min-h-screen bg-edf-light-gray">
       {/* Nav bar */}
-      <nav className="h-14 bg-edf-navy flex items-center px-6 justify-between sticky top-0 z-10 shadow-md">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1">
-            <span className="font-mono font-bold text-xl text-white tracking-tight">EDF</span>
-            <span className="text-white/30 mx-2 select-none">|</span>
-            <span className="font-mono font-bold text-xl text-edf-orange tracking-tight">
-              Energy
-            </span>
-          </div>
-          <span className="text-white/60 font-sans text-sm hidden sm:inline">
-            Walmart Energy Portfolio
-          </span>
-        </div>
-        <span className="font-mono text-sm text-white/75">{today}</span>
-      </nav>
+      <AppNav />
 
       <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
         {isLoading ? (
@@ -105,7 +89,7 @@ export default function Home() {
           <>
             {/* KPI Cards */}
             <section>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <KpiCard
                   title="Total Portfolio Usage"
                   value={`${totalUsage.toLocaleString()} therms`}

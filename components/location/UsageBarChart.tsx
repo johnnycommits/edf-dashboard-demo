@@ -27,7 +27,12 @@ export function UsageBarChart({ data, height = 220 }: UsageBarChartProps) {
             <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" vertical={false} />
             <XAxis dataKey="month" tickFormatter={fmtMonth} tick={{ fontSize: 11, fontFamily: "var(--font-mono)", fill: "#8492A6" }} tickLine={false} axisLine={false} />
             <YAxis hide />
-            <Tooltip contentStyle={{ fontFamily: "var(--font-mono)", fontSize: 12, border: "1px solid #E5E7EB", borderRadius: 6 }} formatter={(v) => [`${Number(v).toLocaleString()} therms`, "Usage"]} labelFormatter={(m) => m} />
+            <Tooltip
+              contentStyle={{ fontFamily: "var(--font-mono)", fontSize: 12, border: "1px solid #E5E7EB", borderRadius: 6 }}
+              formatter={(v) => [`${Number(v).toLocaleString()} therms`, "Usage"]}
+              labelFormatter={(m) => m}
+              cursor={{ fill: "#F3F4F6", fillOpacity: 0.6 }}
+            />
             <Bar dataKey="therms" fill="#1A4DB5" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
@@ -35,4 +40,3 @@ export function UsageBarChart({ data, height = 220 }: UsageBarChartProps) {
     </Card>
   );
 }
-

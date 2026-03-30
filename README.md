@@ -1,4 +1,4 @@
-# EDF Energy Dashboard Demo
+# ABC Energy Dashboard Demo
 
 A Walmart natural gas usage analytics dashboard built for an EDF enterprise client presentation. Displays consumption metrics, cost analysis, and usage trends across Walmart store locations powered by EDF-sourced natural gas.
 

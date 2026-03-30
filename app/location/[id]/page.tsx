@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { format, parseISO, subDays } from "date-fns";
 import {
@@ -23,6 +23,7 @@ import {
   LocationSidebar,
   LocationDetailSkeleton,
 } from "@/components/location";
+import { AppNav } from "@/components/nav";
 
 export default function LocationPage({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -107,23 +108,11 @@ export default function LocationPage({ params }: { params: { id: string } }) {
     return () => clearTimeout(timer);
   }, [params.id]);
 
-  const todayLabel = useMemo(() => format(new Date(), "MMM d, yyyy"), []);
-
   if (isLoading) {
     return (
       <main className="min-h-screen bg-edf-light-gray">
         {/* Nav bar */}
-        <nav className="h-14 bg-edf-navy flex items-center px-6 justify-between sticky top-0 z-10 shadow-md">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1">
-              <span className="font-mono font-bold text-xl text-white tracking-tight">EDF</span>
-              <span className="text-white/30 mx-2 select-none">|</span>
-              <span className="font-mono font-bold text-xl text-edf-orange tracking-tight">Energy</span>
-            </div>
-            <span className="text-white/60 font-sans text-sm hidden sm:inline">Walmart Energy Portfolio</span>
-          </div>
-          <span className="font-mono text-sm text-white/75">{todayLabel}</span>
-        </nav>
+        <AppNav />
         <div className="max-w-7xl mx-auto px-4 py-6">
           <LocationDetailSkeleton />
         </div>
@@ -134,17 +123,7 @@ export default function LocationPage({ params }: { params: { id: string } }) {
   if (notFound || !location || !summary) {
     return (
       <main className="min-h-screen bg-edf-light-gray">
-        <nav className="h-14 bg-edf-navy flex items-center px-6 justify-between sticky top-0 z-10 shadow-md">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1">
-              <span className="font-mono font-bold text-xl text-white tracking-tight">EDF</span>
-              <span className="text-white/30 mx-2 select-none">|</span>
-              <span className="font-mono font-bold text-xl text-edf-orange tracking-tight">Energy</span>
-            </div>
-            <span className="text-white/60 font-sans text-sm hidden sm:inline">Walmart Energy Portfolio</span>
-          </div>
-          <span className="font-mono text-sm text-white/75">{todayLabel}</span>
-        </nav>
+        <AppNav />
         <div className="flex flex-col items-center justify-center min-h-[calc(100vh-56px)] p-8">
           <h1 className="text-xl font-semibold text-edf-dark mb-2">Location not found</h1>
           <button onClick={() => router.push("/")} className="text-edf-navy hover:underline text-sm">
@@ -158,31 +137,21 @@ export default function LocationPage({ params }: { params: { id: string } }) {
   return (
     <main className="min-h-screen bg-edf-light-gray">
       {/* Nav bar */}
-      <nav className="h-14 bg-edf-navy flex items-center px-6 justify-between sticky top-0 z-10 shadow-md">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1">
-            <span className="font-mono font-bold text-xl text-white tracking-tight">EDF</span>
-            <span className="text-white/30 mx-2 select-none">|</span>
-            <span className="font-mono font-bold text-xl text-edf-orange tracking-tight">Energy</span>
-          </div>
-          <span className="text-white/60 font-sans text-sm hidden sm:inline">Walmart Energy Portfolio</span>
-        </div>
-        <span className="font-mono text-sm text-white/75">{todayLabel}</span>
-      </nav>
+      <AppNav />
 
       <div className="max-w-7xl mx-auto px-4 py-6">
         <LocationHeader location={location} onBack={() => router.push("/")} />
         <LocationKpiRow summary={summary} />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-6 order-2 lg:order-1">
             <UsageAreaChart data={last90Days} />
             <UsageBarChart data={monthlyData} />
             <TemperatureOverlayChart data={overlayData} />
             <MultiLineChart data={yearCompare} />
             <RecentRecordsTable records={recent14} />
           </div>
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 order-1 lg:order-2">
             <LocationSidebar location={location} />
           </div>
         </div>

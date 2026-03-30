@@ -36,7 +36,7 @@ export function LocationKpiRow({ summary, isLoading }: LocationKpiRowProps) {
 
   return (
     <section className="mt-4">
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <KpiCard
           title="This Month"
           value={`${summary.currentMonthUsage.toLocaleString()} therms`}
@@ -70,4 +70,3 @@ export function LocationKpiRow({ summary, isLoading }: LocationKpiRowProps) {
     </section>
   );
 }
-

@@ -15,7 +15,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "EDF Energy Dashboard",
+  title: "ABC Energy Dashboard",
   description: "Walmart natural gas usage dashboard — EDF enterprise demo",
 };
 

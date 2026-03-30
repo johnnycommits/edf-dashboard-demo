@@ -37,7 +37,7 @@ export default function DesignSystemPage() {
         <div>
           <h1 className="text-4xl font-bold text-edf-navy mb-2">EDF Design System Reference</h1>
           <p className="text-edf-mid-gray text-lg">
-            Design tokens, typography, spacing, and component previews for the EDF Energy Dashboard.
+            Design tokens, typography, spacing, and component previews for the ABC Energy Dashboard.
           </p>
           <p className="text-sm text-edf-mid-gray mt-1 font-mono">
             Dev reference only — can be deleted before production
@@ -85,7 +85,7 @@ export default function DesignSystemPage() {
           <div className="bg-white rounded-lg border border-edf-border p-6 space-y-6">
             <div>
               <p className="text-xs font-mono text-edf-mid-gray mb-1">h1 / text-4xl / font-bold / Source Sans 3</p>
-              <h1 className="text-4xl font-bold text-edf-dark">EDF Energy Dashboard</h1>
+              <h1 className="text-4xl font-bold text-edf-dark">ABC Energy Dashboard</h1>
             </div>
             <div>
               <p className="text-xs font-mono text-edf-mid-gray mb-1">h2 / text-3xl / font-semibold</p>
@@ -253,7 +253,7 @@ export default function DesignSystemPage() {
         </section>
 
         <div className="pb-8 text-center text-xs text-edf-mid-gray">
-          EDF Energy Dashboard Demo — Design System Reference
+          ABC Energy Dashboard Demo — Design System Reference
           <br />
           Colors: EDF brand fallback values used (edf.fr inaccessible during build) — navy #003189, orange #FF6600
         </div>

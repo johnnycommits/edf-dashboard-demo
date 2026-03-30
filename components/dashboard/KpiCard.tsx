@@ -32,10 +32,10 @@ export function KpiCard({ title, value, change, changeLabel, isLoading, subvalue
     );
 
   return (
-    <Card className="border-l-[3px] border-l-edf-navy bg-white">
-      <CardContent className="p-5">
+    <Card className="border-l-[3px] border-l-edf-navy bg-white py-0 sm:py-4">
+      <CardContent className="px-4 py-4">
         <p className="text-xs uppercase tracking-wide text-edf-mid-gray font-sans mb-2">{title}</p>
-        <p className="text-2xl font-mono font-semibold text-edf-dark leading-tight">{value}</p>
+        <p className="text-lg sm:text-2xl font-mono font-semibold text-edf-dark leading-tight">{value}</p>
         {subvalue && <p className="text-sm font-mono text-edf-mid-gray mt-0.5">{subvalue}</p>}
         <div className="flex items-center gap-2 mt-1.5">
           {changeEl}

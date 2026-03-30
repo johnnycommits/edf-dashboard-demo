@@ -64,7 +64,7 @@ export function LocationTableRow({ summary, sparklineData, onClick, variant }: L
   }
 
   return (
-    <Card className="bg-white cursor-pointer hover:shadow-md transition-shadow" onClick={onClick}>
+    <Card className="bg-white cursor-pointer hover:shadow-md transition-shadow py-0" onClick={onClick}>
       <CardContent className="p-4">
         <div className="font-semibold text-edf-dark text-sm">{location.name}</div>
         <div className="text-xs text-edf-mid-gray mb-3">
