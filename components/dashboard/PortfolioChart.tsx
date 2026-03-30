@@ -91,7 +91,7 @@ export function PortfolioChart({ data, isLoading }: PortfolioChartProps) {
     <Card className="bg-white">
       <CardHeader className="pb-0">
         <CardTitle className="text-sm font-sans font-semibold text-edf-dark">
-          This Month's Portfolio Usage
+          This Month&#39;s Portfolio Usage
         </CardTitle>
         <p className="text-xs text-edf-mid-gray">All 12 locations combined, therms/day</p>
       </CardHeader>

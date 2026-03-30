@@ -104,7 +104,7 @@ export default function LocationPage({ params }: { params: { id: string } }) {
         setYearCompare(yc);
 
         setIsLoading(false);
-      } catch (e) {
+      } catch {
         setNotFound(true);
         setIsLoading(false);
       }

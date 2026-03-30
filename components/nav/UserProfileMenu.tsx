@@ -88,7 +88,7 @@ export function UserProfileMenu() {
 
           {/* Menu items */}
           <div className="py-2">
-            {MENU_ITEMS.map((item, idx) => {
+            {MENU_ITEMS.map((item) => {
               const meta = PROFILE_ITEM_META[item] ?? { enabled: false };
               const isActive = meta.href && pathname === meta.href;
 

@@ -9,7 +9,6 @@ import { TenantDropdown } from "./TenantDropdown";
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/" },
-  { label: "Locations", href: "/locations" },
   { label: "Reports", href: "/reports" },
   { label: "Settings", href: "/settings" },
 ] as const;
@@ -29,7 +28,7 @@ export function AppNav() {
 
   return (
     <>
-      <nav className="h-14 bg-edf-navy flex items-center px-6 justify-between sticky top-0 z-20 shadow-md">
+      <nav className="h-14 bg-edf-navy flex items-center px-3 md:px-6 justify-between sticky top-0 z-20 shadow-md">
         {/* Left: Brand */}
         <div className="flex items-center gap-3">
           <Link
@@ -45,14 +44,17 @@ export function AppNav() {
         </div>
 
         {/* Right: Desktop nav + actions */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 md:gap-4">
           {/* Desktop nav items */}
-          <ul className="hidden md:flex items-center gap-6 mr-2">
+          <ul className="hidden md:flex items-center gap-3">
             {NAV_ITEMS.map((item) => {
               const disabled = item.href !== "/";
-              const isActive = pathname === item.href;
+              const isActive =
+                item.href === "/"
+                  ? pathname === "/" || pathname.startsWith("/location/")
+                  : pathname === item.href;
               const baseClasses =
-                "flex items-center text-sm font-sans transition-colors border-b-2 pb-0.5";
+                "flex items-center text-sm font-sans transition-colors rounded-full px-3 py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60";
               if (disabled) {
                 return (
                   <li key={item.href}>
@@ -60,7 +62,9 @@ export function AppNav() {
                       role="link"
                       aria-disabled="true"
                       className={`${baseClasses} ${
-                        isActive ? "text-white border-edf-orange" : "text-white/40 border-transparent"
+                        isActive
+                          ? "text-white bg-white/15 ring-1 ring-white/10"
+                          : "text-white/40"
                       } cursor-not-allowed`}
                     >
                       {item.label}
@@ -74,8 +78,8 @@ export function AppNav() {
                     href={item.href}
                     className={`${baseClasses} ${
                       isActive
-                        ? "text-white border-edf-orange"
-                        : "text-white/90 hover:text-white border-transparent"
+                        ? "text-white bg-white/20 ring-1 ring-white/10 shadow-sm"
+                        : "text-white/90 hover:text-white hover:bg-white/10"
                     }`}
                   >
                     {item.label}
@@ -94,7 +98,7 @@ export function AppNav() {
 
           {/* Mobile hamburger (to the RIGHT of user) */}
           <button
-            className="md:hidden -mr-1 p-2 rounded-md hover:bg-white/10 transition-colors"
+            className="md:hidden p-2 rounded-md hover:bg-white/10 transition-colors"
             aria-label="Open navigation menu"
             onClick={() => setMobileOpen(true)}
           >
@@ -138,7 +142,10 @@ export function AppNav() {
           <ul className="divide-y divide-white/10">
             {NAV_ITEMS.map((item) => {
               const disabled = item.href !== "/";
-              const isActive = pathname === item.href;
+              const isActive =
+                item.href === "/"
+                  ? pathname === "/" || pathname.startsWith("/location/")
+                  : pathname === item.href;
               if (disabled) {
                 return (
                   <li key={item.href}>

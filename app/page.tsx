@@ -29,7 +29,7 @@ export default function Home() {
         .forEach((r) => {
           byDate[r.date] = (byDate[r.date] ?? 0) + r.thermsUsed;
         });
-      const mapped = Object.entries(byDate)
+      const mapped: Array<{ date: string; therms: number | null }> = Object.entries(byDate)
         .sort(([a], [b]) => a.localeCompare(b))
         .map(([date, therms]) => ({ date, therms: Math.round(therms) }));
       // Add a placeholder for Mar 31 with null so the line doesn't extend into tomorrow
