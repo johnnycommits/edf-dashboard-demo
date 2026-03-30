@@ -7,7 +7,7 @@ export function NotificationsBell() {
   const [showing, setShowing] = useState(false);
   const [notifications, setNotifications] = useState(
     [
-      { id: 1, text: "Usage spike at Chicago store", read: false },
+      { id: 1, text: "Usage spike at Houston store", read: false },
       { id: 2, text: "Monthly report ready", read: false },
       { id: 3, text: "New alert threshold reached", read: false },
     ] as { id: number; text: string; read: boolean }[]

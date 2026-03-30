@@ -5,6 +5,7 @@ import { Menu, X } from "lucide-react";
 import { NotificationsBell } from "./NotificationsBell";
 import { UserProfileMenu } from "./UserProfileMenu";
 import { usePathname } from "next/navigation";
+import { TenantDropdown } from "./TenantDropdown";
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/" },
@@ -40,7 +41,7 @@ export function AppNav() {
             <span className="font-mono font-bold text-xl text-edf-orange tracking-tight">ENERGY</span>
           </Link>
           <span className="text-white/30 select-none hidden sm:inline">|</span>
-          <span className="text-white/60 font-sans text-sm hidden sm:inline">Walmart, Inc.</span>
+          <TenantDropdown />
         </div>
 
         {/* Right: Desktop nav + actions */}
@@ -50,21 +51,18 @@ export function AppNav() {
             {NAV_ITEMS.map((item) => {
               const disabled = item.href !== "/";
               const isActive = pathname === item.href;
-              const baseClasses = "flex items-center text-sm font-sans transition-colors";
+              const baseClasses =
+                "flex items-center text-sm font-sans transition-colors border-b-2 pb-0.5";
               if (disabled) {
                 return (
                   <li key={item.href}>
                     <span
                       role="link"
                       aria-disabled="true"
-                      className={`${baseClasses} text-white/40 cursor-not-allowed`}
+                      className={`${baseClasses} ${
+                        isActive ? "text-white border-edf-orange" : "text-white/40 border-transparent"
+                      } cursor-not-allowed`}
                     >
-                      <span
-                        aria-hidden
-                        className={`mr-2 inline-block w-1.5 h-1.5 rounded-full ${
-                          isActive ? "bg-edf-orange" : "bg-white/0"
-                        }`}
-                      />
                       {item.label}
                     </span>
                   </li>
@@ -74,14 +72,12 @@ export function AppNav() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className={`${baseClasses} text-white/90 hover:text-white`}
+                    className={`${baseClasses} ${
+                      isActive
+                        ? "text-white border-edf-orange"
+                        : "text-white/90 hover:text-white border-transparent"
+                    }`}
                   >
-                    <span
-                      aria-hidden
-                      className={`mr-2 inline-block w-1.5 h-1.5 rounded-full ${
-                        isActive ? "bg-edf-orange" : "bg-white/0"
-                      }`}
-                    />
                     {item.label}
                   </Link>
                 </li>
@@ -98,7 +94,7 @@ export function AppNav() {
 
           {/* Mobile hamburger (to the RIGHT of user) */}
           <button
-            className="md:hidden ml-1 -mr-1 p-2 rounded-md hover:bg-white/10 transition-colors"
+            className="md:hidden -mr-1 p-2 rounded-md hover:bg-white/10 transition-colors"
             aria-label="Open navigation menu"
             onClick={() => setMobileOpen(true)}
           >
@@ -125,8 +121,10 @@ export function AppNav() {
         aria-modal="true"
         aria-label="Mobile navigation"
       >
-        <div className="h-14 px-4 flex items-center justify-between border-b border-white/10">
-          <span className="text-sm font-semibold text-white font-sans">Menu</span>
+        <div className="h-14 px-3 flex items-center gap-2 border-b border-white/10">
+          <div className="relative flex-1 min-w-0">
+            <TenantDropdown variant="mobile" className="w-full" />
+          </div>
           <button
             className="p-2 rounded-md hover:bg-white/10"
             onClick={() => setMobileOpen(false)}
