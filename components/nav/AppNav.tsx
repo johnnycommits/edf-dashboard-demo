@@ -93,8 +93,10 @@ export function AppNav() {
           <span className="text-white/30 select-none hidden sm:inline">|</span>
 
           {/* Notifications + User */}
-          <NotificationsBell />
-          <UserProfileMenu />
+          <div className="flex items-center gap-3.5 md:gap-4">
+            <NotificationsBell />
+            <UserProfileMenu />
+          </div>
 
           {/* Mobile hamburger (to the RIGHT of user) */}
           <button
