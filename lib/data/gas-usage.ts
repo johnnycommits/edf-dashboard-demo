@@ -90,7 +90,16 @@ function generateRecordsForLocation(location: WalmartLocation): DailyUsageRecord
 
         // Daily random noise ±8%
         const noise = 0.92 + seededRandom(seedCounter) * 0.16;
-        const thermsUsed = Math.round(baseUsage * multiplier * noise);
+
+        // Anomaly: Houston HVAC gas valve stuck open starting Mar 10, 2026
+        const isHoustonAnomaly =
+          location.id === "WM-HOU-001" &&
+          year === 2026 &&
+          month === 3 &&
+          day >= 10;
+        const anomalyMultiplier = isHoustonAnomaly ? 1.65 : 1.0;
+
+        const thermsUsed = Math.round(baseUsage * multiplier * noise * anomalyMultiplier);
 
         // Daily temp variation
         const tempNoise = (seededRandom(seedCounter + 0.5) - 0.5) * 2 * tempVariation;
@@ -100,7 +109,11 @@ function generateRecordsForLocation(location: WalmartLocation): DailyUsageRecord
 
         // Occasional maintenance notes on low-usage anomaly days
         let notes: string | undefined;
-        if (seededRandom(seedCounter + 0.7) > 0.98) {
+        if (location.id === "WM-HOU-001" && year === 2026 && month === 3 && day === 10) {
+          notes = "HVAC unit 3 — irregular cycle reported by facilities";
+        } else if (location.id === "WM-HOU-001" && year === 2026 && month === 3 && day === 19) {
+          notes = "Work order submitted — replacement valve on backorder";
+        } else if (seededRandom(seedCounter + 0.7) > 0.98) {
           notes = "HVAC maintenance";
         } else if (seededRandom(seedCounter + 0.9) > 0.995) {
           notes = "Partial store closure";
